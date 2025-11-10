@@ -5,6 +5,7 @@ require("@chainlink/env-enc").config();
 // require("./tasks/deploy-fundme");
 // require("./tasks/interact-fundme");
 require("./tasks")
+require("hardhat-deploy")
 
 const SEPOLIA_URL = process.env.SEPOLIA_URL;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
@@ -14,6 +15,7 @@ const PRIVATE_KEY_1 = process.env.PRIVATE_KEY_1;
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: "0.8.28",
+  defaultNetwork: "hardhat",
   networks: {
     sepolia: {
       // url: Alchemy, Infura, QuickNode
@@ -24,5 +26,13 @@ module.exports = {
   },
   etherscan: {
     apiKey: ETHERSCAN_API_KEY
+  },
+  namedAccounts: {
+    firstAccount: {
+      default: 0
+    },
+    secondAccount: {
+      default: 1
+    },
   }
 };
