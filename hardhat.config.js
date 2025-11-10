@@ -1,4 +1,5 @@
 const { AlchemyProvider } = require("ethers");
+require("@nomicfoundation/hardhat-ethers");
 
 require("@nomicfoundation/hardhat-toolbox");
 require("@chainlink/env-enc").config();

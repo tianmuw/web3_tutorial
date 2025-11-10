@@ -23,6 +23,9 @@ contract FundMe {
 
     bool public getFundSuccess = false; //flag
 
+    event FundWithdrawByOwner(uint256);
+    event RefundByFounder(address, uint256);
+
     constructor(uint256 _lockTime, address dataFeedAddr) {
         // sepolia testnet
         // dataFeed = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
@@ -75,10 +78,14 @@ contract FundMe {
 
         // call: transfer ETH with data return value of function and bool 
         bool success;
+        uint256 balance = address(this).balance;
         (success, ) = payable(msg.sender).call{value: address(this).balance}("");
         require(success, "tx failed");
         fundersToAmount[msg.sender] = 0;
         getFundSuccess = true;
+
+        //emit event
+        emit FundWithdrawByOwner(balance);
     }
 
     function transferOwnership(address newOwner) public {
@@ -91,9 +98,12 @@ contract FundMe {
         require(fundersToAmount[msg.sender] != 0, "there is no fund for you");
         
         bool success;
+        uint256 amount = fundersToAmount[msg.sender];
         (success, ) = payable(msg.sender).call{value: fundersToAmount[msg.sender]}("");
         require(success, "tx failed");
         fundersToAmount[msg.sender] = 0;
+
+        emit RefundByFounder(msg.sender, amount);
     }
 
     modifier windowClosed(){
