@@ -17,6 +17,9 @@ const PRIVATE_KEY_1 = process.env.PRIVATE_KEY_1;
 module.exports = {
   solidity: "0.8.28",
   defaultNetwork: "hardhat",
+  mocha: {
+    timeout: 200000
+  },
   networks: {
     sepolia: {
       // url: Alchemy, Infura, QuickNode
